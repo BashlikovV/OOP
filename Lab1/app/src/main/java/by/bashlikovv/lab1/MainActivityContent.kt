@@ -16,12 +16,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import by.bashlikovv.lab1.screens.circle.CircleScreen
+import by.bashlikovv.lab1.screens.drawing.DrawingScreen
 import by.bashlikovv.lab1.screens.oval.OvalScreen
 import by.bashlikovv.lab1.screens.square.SquareScreen
 
 enum class Screens {
     SQUARE,
     CIRCLE,
+    OVAL,
     DRAWING
 }
 
@@ -53,6 +55,14 @@ fun MainActivityContent(
             icon = { Text(text = "CIRCLE", modifier = Modifier.padding(7.dp)) }
         )
         NavigationBarItem(
+            selected = mainActivityUiState.selectedItem.name == Screens.OVAL.name,
+            onClick = {
+                mainActivityViewModel.onSelectItem(Screens.OVAL)
+                navHostController.navigate(Screens.OVAL.name)
+            },
+            icon = { Text(text = "OVAL", modifier = Modifier.padding(7.dp)) }
+        )
+        NavigationBarItem(
             selected = mainActivityUiState.selectedItem.name == Screens.DRAWING.name,
             onClick = {
                 mainActivityViewModel.onSelectItem(Screens.DRAWING)
@@ -72,8 +82,11 @@ fun MainActivityContent(
         composable(Screens.CIRCLE.name) {
             CircleScreen(modifier = Modifier.fillMaxWidth())
         }
-        composable(Screens.DRAWING.name) {
+        composable(Screens.OVAL.name) {
             OvalScreen(modifier = Modifier.fillMaxWidth())
+        }
+        composable(Screens.DRAWING.name) {
+            DrawingScreen(modifier = Modifier.fillMaxWidth())
         }
     }
 }
