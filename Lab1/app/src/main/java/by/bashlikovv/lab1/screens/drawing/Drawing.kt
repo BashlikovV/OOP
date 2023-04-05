@@ -1,26 +1,40 @@
 package by.bashlikovv.lab1.screens.drawing
 
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import by.bashlikovv.lab1.utils.viewModelCreator
 import com.godaddy.android.colorpicker.ClassicColorPicker
 import com.godaddy.android.colorpicker.HsvColor
 
 @Composable
 fun DrawingScreen(
-    modifier: Modifier = Modifier,
-    drawingViewModel: DrawingViewModel = viewModel()
+    modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current as ComponentActivity
+    val drawingViewModel: DrawingViewModel by context.viewModelCreator {
+        DrawingViewModel(context)
+    }
+
+    LaunchedEffect(Unit) {
+        drawingViewModel.getJsonFromFile()
+    }
+
+    DisposableEffect(Unit) {
+        DisposableEffectScope().onDispose {
+            drawingViewModel.saveJsonToFile()
+        }
+    }
+
     val drawingUiState by drawingViewModel.drawingUiState.collectAsState()
 
     Column(modifier = modifier) {
@@ -28,7 +42,7 @@ fun DrawingScreen(
             modifier = modifier
                 .height(500.dp)
                 .pointerInput(Unit) {
-                    detectDragGestures { change, dragAmount -> drawingViewModel.onDraw(change.position) }
+                    detectDragGestures { change, _ -> drawingViewModel.onDraw(change.position) }
                 }
         ) {
             if (drawingUiState.isCanDrawing) {

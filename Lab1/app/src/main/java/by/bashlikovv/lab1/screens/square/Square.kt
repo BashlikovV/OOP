@@ -1,26 +1,28 @@
 package by.bashlikovv.lab1.screens.square
 
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.Slider
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.withTransform
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import by.bashlikovv.lab1.shapes.Square
+import by.bashlikovv.lab1.utils.viewModelCreator
 
 @Composable
 fun SquareScreen(
-    modifier: Modifier = Modifier,
-    squareViewModel: SquareViewModel = viewModel()
+    modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current as ComponentActivity
+    val squareViewModel: SquareViewModel by context.viewModelCreator {
+        SquareViewModel(context)
+    }
     LaunchedEffect(Unit) {
         squareViewModel.applySquare(
             Square(
@@ -30,6 +32,12 @@ fun SquareScreen(
                 color = Color.Green
             )
         )
+        squareViewModel.getJsonFromFile()
+    }
+    DisposableEffect(Unit) {
+        DisposableEffectScope().onDispose {
+            squareViewModel.saveJsonToFile()
+        }
     }
     val squareUiState by squareViewModel.squareUiState.collectAsState()
 

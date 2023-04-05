@@ -2,6 +2,7 @@ package by.bashlikovv.lab1.shapes
 
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import java.io.Serializable
 
 class Oval(
     color: Color = Color.White,
@@ -12,7 +13,9 @@ class Oval(
     val dimension: Size = Size(width, height),
     val scaleX: Float = 1f,
     val scaleY: Float = 1f
-) : Circle(x = x, y = y, color = color) {
+) : Circle(x = x, y = y, color = color), Serializable {
+
+    constructor() : this(Color.White)
 
     companion object {
         const val PI = 3.1415927f
