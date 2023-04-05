@@ -1,76 +1,24 @@
 package by.bashlikovv.lab1.screens.oval
 
 import android.content.Context
-import android.os.Parcel
-import android.os.Parcelable
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.ui.geometry.Size
 import androidx.lifecycle.ViewModel
-import by.bashlikovv.lab1.screens.circle.CircleViewModel
-import by.bashlikovv.lab1.shapes.Drawing
 import by.bashlikovv.lab1.shapes.Oval
-import by.bashlikovv.lab1.utils.JsonSerialization
-import com.google.gson.Gson
+import by.bashlikovv.lab1.utils.TextSerialization
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import java.io.File
-import java.io.FileInputStream
-import java.io.FileOutputStream
+import java.io.*
+import java.util.*
 
 class OvalViewModel(
     private val context: Context
-) : ViewModel(), JsonSerialization {
+) : ViewModel(), Serializable, TextSerialization {
 
     private val _ovalUiState = MutableStateFlow(Oval())
     val ovalUiState = _ovalUiState.asStateFlow()
-
-    private val _drawingUiState = MutableStateFlow(Drawing())
-    val drawingUiState = _drawingUiState.asStateFlow()
-
-    override val gson = Gson()
-
-    override fun <T>String.parseJson(clazz: Class<T>): T {
-        return gson.fromJson(this, clazz)
-    }
-
-    override fun <T> T.parseToJson(): String {
-        return gson.toJson(this)
-    }
-
-    override fun getJsonFromFile() {
-        val file = File(context.filesDir, OVAL_FILE_NAME)
-        if (file.exists()) {
-            val fileInputStream = FileInputStream(file)
-            val str = fileInputStream.readAllBytes().decodeToString()
-            if (str.isNotEmpty()) {
-                try {
-                    val loadedState = str.parseJson(Oval::class.java)
-                    _ovalUiState.update { loadedState }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                } finally {
-                    fileInputStream.close()
-                }
-            }
-        }
-    }
-
-    override fun saveJsonToFile() {
-        val file = File(context.filesDir, OVAL_FILE_NAME)
-        if (!file.exists()) {
-            file.createNewFile()
-        }
-        val fileOutputStream = FileOutputStream(file)
-        val tmp = _ovalUiState.value
-        try {
-            val json = tmp.parseToJson()
-            fileOutputStream.write(json.toByteArray())
-        } catch (e: Exception) {
-            e.printStackTrace()
-        } finally {
-            fileOutputStream.close()
-        }
-    }
 
     companion object {
         const val OVAL_FILE_NAME = "serialization.oval"
@@ -94,5 +42,77 @@ class OvalViewModel(
 
     fun onWidthChange(newWidth: Float) {
         _ovalUiState.update { it.copy(dimension = Size(width = newWidth, height = it.dimension.height)) }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun getTextFromFile() {
+        val file = File(context.filesDir, OVAL_FILE_NAME)
+        val fileInputStream = FileInputStream(file)
+        try {
+            val tmp = fileInputStream.readAllBytes().decodeToString()
+            val state = fromString(tmp) as Oval
+            _ovalUiState.update { state }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            fileInputStream.close()
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun saveTextToFile() {
+        val file = File(context.filesDir, OVAL_FILE_NAME)
+        if (!file.exists()) {
+            file.createNewFile()
+        }
+        val fileOutputStream = FileOutputStream(file)
+        val tmp = _ovalUiState.value
+        try {
+            fileOutputStream.write(toString(tmp).encodeToByteArray())
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            fileOutputStream.close()
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun toString(obj: Serializable): String {
+        val result: String
+        val outputStream = ByteArrayOutputStream()
+        var objectOutputStream: ObjectOutputStream? = null
+
+        try {
+            objectOutputStream = ObjectOutputStream(outputStream)
+            objectOutputStream.writeObject(obj)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            result = Base64.getEncoder().encodeToString(outputStream.toByteArray())
+            objectOutputStream?.close()
+            outputStream.close()
+        }
+
+        return result
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun fromString(str: String): Any {
+        val data = Base64.getDecoder().decode(str)
+        val byteArrayInputStream = ByteArrayInputStream(data)
+        var objectInputStream: ObjectInputStream? = null
+        val result: Any?
+
+        try {
+            objectInputStream = ObjectInputStream(byteArrayInputStream)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            result = objectInputStream?.readObject()
+            objectInputStream?.close()
+            byteArrayInputStream.close()
+        }
+
+        return result ?: Oval()
     }
 }
