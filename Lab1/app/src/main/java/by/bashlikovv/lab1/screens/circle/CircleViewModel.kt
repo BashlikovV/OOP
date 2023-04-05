@@ -3,6 +3,7 @@ package by.bashlikovv.lab1.screens.circle
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import by.bashlikovv.lab1.shapes.Circle
+import by.bashlikovv.lab1.utils.BinarySerialization
 import by.bashlikovv.lab1.utils.JsonSerialization
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,10 +12,13 @@ import kotlinx.coroutines.flow.update
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
+import java.io.ObjectInputStream
+import java.io.ObjectOutputStream
+import java.io.Serializable
 
 class CircleViewModel(
     private val context: Context
-) : ViewModel(), JsonSerialization {
+) : ViewModel(), JsonSerialization, Serializable, BinarySerialization {
 
     private val _circleUiState = MutableStateFlow(Circle())
     val circleUiState = _circleUiState.asStateFlow()
@@ -41,6 +45,8 @@ class CircleViewModel(
             fileOutputStream.write(json.toByteArray())
         } catch (e: Exception) {
             e.printStackTrace()
+        } finally {
+            fileOutputStream.close()
         }
     }
 
@@ -59,8 +65,42 @@ class CircleViewModel(
                     _circleUiState.update { loadedState }
                 } catch (e: Exception) {
                     e.printStackTrace()
+                } finally {
+                    fileInputStream.close()
                 }
             }
+        }
+    }
+
+    override fun geBinaryFromFile() {
+        val file = File(context.filesDir, CIRCLE_FILE_NAME)
+        val fileInputStream = FileInputStream(file)
+        val objInputStream = ObjectInputStream(fileInputStream)
+        try {
+            val tmp = objInputStream.readObject() as Circle
+            _circleUiState.update { tmp }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            fileInputStream.close()
+        }
+    }
+
+    override fun saveBinaryToFile() {
+        val file = File(context.filesDir, CIRCLE_FILE_NAME)
+        if (!file.exists()) {
+            file.createNewFile()
+        }
+        val fileOutputStream = FileOutputStream(file)
+        val objOutputStream = ObjectOutputStream(fileOutputStream)
+        val tmp = _circleUiState.value
+        try {
+            objOutputStream.writeObject(tmp)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            objOutputStream.close()
+            fileOutputStream.close()
         }
     }
 
