@@ -43,7 +43,7 @@ fun MainActivityContent(
                 mainActivityViewModel.onSelectItem(Screens.SQUARE)
                 navHostController.navigate(Screens.SQUARE.name)
             },
-            icon = { Text(text = "SQUARE", modifier = Modifier.padding(7.dp)) }
+            icon = { Text(text = "SQUARE", modifier = Modifier.padding(2.5.dp)) }
         )
         NavigationBarItem(
             selected = mainActivityUiState.selectedItem.name == Screens.CIRCLE.name,
@@ -52,7 +52,7 @@ fun MainActivityContent(
                 navHostController.navigate(Screens.CIRCLE.name)
 
             },
-            icon = { Text(text = "CIRCLE", modifier = Modifier.padding(7.dp)) }
+            icon = { Text(text = "CIRCLE", modifier = Modifier.padding(2.5.dp)) }
         )
         NavigationBarItem(
             selected = mainActivityUiState.selectedItem.name == Screens.OVAL.name,
@@ -60,7 +60,7 @@ fun MainActivityContent(
                 mainActivityViewModel.onSelectItem(Screens.OVAL)
                 navHostController.navigate(Screens.OVAL.name)
             },
-            icon = { Text(text = "OVAL", modifier = Modifier.padding(7.dp)) }
+            icon = { Text(text = "OVAL", modifier = Modifier.padding(2.5.dp)) }
         )
         NavigationBarItem(
             selected = mainActivityUiState.selectedItem.name == Screens.DRAWING.name,
@@ -68,7 +68,7 @@ fun MainActivityContent(
                 mainActivityViewModel.onSelectItem(Screens.DRAWING)
                 navHostController.navigate(Screens.DRAWING.name)
             },
-            icon = { Text(text = "DRAWING", modifier = Modifier.padding(7.dp)) }
+            icon = { Text(text = "DRAWING", modifier = Modifier.padding(2.5.dp)) }
         )
     }
     NavHost(
