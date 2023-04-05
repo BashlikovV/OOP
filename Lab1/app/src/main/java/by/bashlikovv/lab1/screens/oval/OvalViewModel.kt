@@ -48,6 +48,8 @@ class OvalViewModel(
                     _ovalUiState.update { loadedState }
                 } catch (e: Exception) {
                     e.printStackTrace()
+                } finally {
+                    fileInputStream.close()
                 }
             }
         }
@@ -65,6 +67,8 @@ class OvalViewModel(
             fileOutputStream.write(json.toByteArray())
         } catch (e: Exception) {
             e.printStackTrace()
+        } finally {
+            fileOutputStream.close()
         }
     }
 

@@ -42,6 +42,8 @@ class DrawingViewModel(
                     _drawingUiState.update { loadedState }
                 } catch (e: Exception) {
                     e.printStackTrace()
+                } finally {
+                    fileInputStream.close()
                 }
             }
         }
@@ -59,6 +61,8 @@ class DrawingViewModel(
             fileOutputStream.write(json.toByteArray())
         } catch (e: Exception) {
             e.printStackTrace()
+        } finally {
+            fileOutputStream.close()
         }
     }
 
