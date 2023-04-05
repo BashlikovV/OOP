@@ -1,26 +1,29 @@
 package by.bashlikovv.lab1.screens.oval
 
+import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.Slider
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.graphics.Color
-import androidx.lifecycle.viewmodel.compose.viewModel
-import by.bashlikovv.lab1.shapes.Oval
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.withTransform
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import by.bashlikovv.lab1.shapes.Oval
+import by.bashlikovv.lab1.utils.viewModelCreator
 
 @Composable
 fun OvalScreen(
-    modifier: Modifier = Modifier,
-    ovalViewModel: OvalViewModel = viewModel()
+    modifier: Modifier = Modifier
 ) {
+    val contex = LocalContext.current as ComponentActivity
+    val ovalViewModel: OvalViewModel by contex.viewModelCreator {
+        OvalViewModel(contex)
+    }
+
     LaunchedEffect(Unit) {
         ovalViewModel.applyOval(Oval(
             color = Color.Green,
@@ -31,7 +34,14 @@ fun OvalScreen(
             scaleX = 1f,
             scaleY = 1f
         ))
+        ovalViewModel.getJsonFromFile()
     }
+    DisposableEffect(Unit) {
+        DisposableEffectScope().onDispose {
+            ovalViewModel.saveJsonToFile()
+        }
+    }
+
     val ovalUiState by ovalViewModel.ovalUiState.collectAsState()
 
     Column (modifier = modifier) {
