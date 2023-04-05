@@ -40,6 +40,8 @@ class SquareViewModel(
                     _squareUiState.update { loadedState }
                 } catch (e: Exception) {
                     e.printStackTrace()
+                } finally {
+                    fileInputStream.close()
                 }
             }
         }
@@ -57,6 +59,8 @@ class SquareViewModel(
             fileOutputStream.write(json.toByteArray())
         } catch (e: Exception) {
             e.printStackTrace()
+        } finally {
+            fileOutputStream.close()
         }
     }
 
