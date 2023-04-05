@@ -1,6 +1,8 @@
 package by.bashlikovv.lab1.screens.oval
 
+import android.os.Build
 import androidx.activity.ComponentActivity
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
@@ -15,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import by.bashlikovv.lab1.shapes.Oval
 import by.bashlikovv.lab1.utils.viewModelCreator
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun OvalScreen(
     modifier: Modifier = Modifier
@@ -34,11 +37,11 @@ fun OvalScreen(
             scaleX = 1f,
             scaleY = 1f
         ))
-        ovalViewModel.getJsonFromFile()
+        ovalViewModel.getTextFromFile()
     }
     DisposableEffect(Unit) {
         DisposableEffectScope().onDispose {
-            ovalViewModel.saveJsonToFile()
+            ovalViewModel.saveTextToFile()
         }
     }
 
