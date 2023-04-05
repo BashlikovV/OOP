@@ -30,12 +30,12 @@ fun CircleScreen(
             color = Color.Green,
             radius = 50f
         ))
-        circleViewModel.getJsonFromFile()
+        circleViewModel.getBinaryFromFile()
     }
 
     DisposableEffect(Unit) {
         DisposableEffectScope().onDispose {
-            circleViewModel.saveJsonToFile()
+            circleViewModel.saveBinaryToFile()
         }
     }
 
