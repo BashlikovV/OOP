@@ -1,6 +1,8 @@
 package by.bashlikovv.lab1.screens.square
 
+import android.os.Build
 import androidx.activity.ComponentActivity
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.height
@@ -15,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import by.bashlikovv.lab1.shapes.Square
 import by.bashlikovv.lab1.utils.viewModelCreator
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Composable
 fun SquareScreen(
     modifier: Modifier = Modifier
