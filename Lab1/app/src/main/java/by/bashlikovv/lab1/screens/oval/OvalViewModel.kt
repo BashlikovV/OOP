@@ -47,9 +47,10 @@ class OvalViewModel(
     @RequiresApi(Build.VERSION_CODES.O)
     override fun getTextFromFile() {
         val file = File(context.filesDir, OVAL_FILE_NAME)
+        if (!file.exists()) return
         val fileInputStream = FileInputStream(file)
         try {
-            val tmp = fileInputStream.readAllBytes().decodeToString()
+            val tmp = fileInputStream.readBytes().decodeToString()
             val state = fromString(tmp) as Oval
             _ovalUiState.update { state }
         } catch (e: Exception) {
