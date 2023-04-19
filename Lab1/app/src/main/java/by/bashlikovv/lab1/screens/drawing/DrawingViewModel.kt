@@ -35,7 +35,7 @@ class DrawingViewModel(
         val file = File(context.filesDir, DRAWING_FILE_NAME)
         if (file.exists()) {
             val fileInputStream = FileInputStream(file)
-            val str = fileInputStream.readAllBytes().decodeToString()
+            val str = fileInputStream.readBytes().decodeToString()
             if (str.isNotEmpty()) {
                 try {
                     val loadedState = str.parseJson(Drawing::class.java)

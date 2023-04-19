@@ -22,6 +22,7 @@ class CircleViewModel(
 
     override fun getBinaryFromFile() {
         val file = File(context.filesDir, CIRCLE_FILE_NAME)
+        if (!file.exists()) return
         val fileInputStream = FileInputStream(file)
         var objInputStream: ObjectInputStream? = null
         try {

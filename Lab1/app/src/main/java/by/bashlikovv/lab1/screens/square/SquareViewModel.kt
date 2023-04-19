@@ -1,6 +1,8 @@
 package by.bashlikovv.lab1.screens.square
 
 import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import by.bashlikovv.lab1.shapes.Square
 import by.bashlikovv.lab1.utils.JsonSerialization
@@ -29,11 +31,12 @@ class SquareViewModel(
         return gson.toJson(this)
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun getJsonFromFile() {
         val file = File(context.filesDir, SQUARE_FILE_NAME)
         if (file.exists()) {
             val fileInputStream = FileInputStream(file)
-            val str = fileInputStream.readAllBytes().decodeToString()
+            val str = fileInputStream.readBytes().decodeToString()
             if (str.isNotEmpty()) {
                 try {
                     val loadedState = str.parseJson(Square::class.java)
