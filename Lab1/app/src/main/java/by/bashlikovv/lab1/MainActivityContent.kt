@@ -19,11 +19,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import by.bashlikovv.lab1.screens.circle.CircleScreen
+import by.bashlikovv.lab1.screens.circle.CircleView
 import by.bashlikovv.lab1.screens.configuration.ConfigurationScreen
-import by.bashlikovv.lab1.screens.drawing.DrawingScreen
-import by.bashlikovv.lab1.screens.oval.OvalScreen
-import by.bashlikovv.lab1.screens.square.SquareScreen
+import by.bashlikovv.lab1.screens.drawing.DrawingView
+import by.bashlikovv.lab1.screens.oval.OvalView
+import by.bashlikovv.lab1.screens.square.SquareView
 
 enum class Screens {
     SQUARE,
@@ -101,16 +101,16 @@ fun MainActivityContent(
         modifier = Modifier.padding(top = 75.dp)
     ) {
         composable(Screens.SQUARE.name) {
-            SquareScreen(modifier = Modifier.fillMaxWidth())
+            SquareView().SquareScreen(modifier = Modifier.fillMaxWidth())
         }
         composable(Screens.CIRCLE.name) {
-            CircleScreen(modifier = Modifier.fillMaxWidth())
+            CircleView().CircleScreen(modifier = Modifier.fillMaxWidth())
         }
         composable(Screens.OVAL.name) {
-            OvalScreen(modifier = Modifier.fillMaxWidth())
+            OvalView().OvalScreen(modifier = Modifier.fillMaxWidth())
         }
         composable(Screens.DRAWING.name) {
-            DrawingScreen(modifier = Modifier.fillMaxWidth())
+            DrawingView().DrawingScreen(modifier = Modifier.fillMaxWidth())
         }
         composable(Screens.CONFIGURATION.name) {
             ConfigurationScreen(modifier = Modifier.fillMaxWidth())
