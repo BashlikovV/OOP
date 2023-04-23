@@ -14,6 +14,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
@@ -24,6 +25,7 @@ import by.bashlikovv.lab1.screens.configuration.ConfigurationScreen
 import by.bashlikovv.lab1.screens.drawing.DrawingView
 import by.bashlikovv.lab1.screens.oval.OvalView
 import by.bashlikovv.lab1.screens.square.SquareView
+import java.io.File
 
 enum class Screens {
     SQUARE,
@@ -95,6 +97,13 @@ fun MainActivityContent(
             modifier = Modifier.width((screenWidth / 5).dp)
         )
     }
+
+    val filesDir = LocalContext.current.filesDir
+    val pluginFile = File(
+        filesDir,
+        "classes.jar"
+    )
+
     NavHost(
         navController = navHostController,
         startDestination = Screens.SQUARE.name,
