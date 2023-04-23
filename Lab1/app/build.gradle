@@ -77,3 +77,16 @@ dependencies {
 
     implementation("com.google.code.gson:gson:2.10.1")
 }
+
+task deleteJar(type: Delete) {
+    delete 'libs/mylibrary.jar'
+}
+
+task exportjar(type: Copy) {
+    from('build/intermediates/compile_library_classes/release/')
+    into('libs/')
+    include('classes.jar')
+    rename('classes.jar', 'mylibrary.jar')
+}
+
+exportjar.dependsOn(deleteJar, build)

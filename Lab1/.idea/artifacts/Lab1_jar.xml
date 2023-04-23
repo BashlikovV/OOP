@@ -1,9 +1,22 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="Lab1:jar">
+  <artifact name="Lab1:jar">
     <output-path>$PROJECT_DIR$/build/classes/artifacts/Lab1_jar</output-path>
-    <root id="archive" name="Lab1.jar">
-      <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/app/META-INF/MANIFEST.MF" />
+    <root id="root">
+      <element id="archive" name="Lab1.jar">
+        <element id="directory" name="META-INF">
+          <element id="file-copy" path="$PROJECT_DIR$/app/META-INF/MANIFEST.MF" />
+        </element>
+        <element id="directory" name="app">
+          <element id="directory" name="by">
+            <element id="directory" name="bashlikovv">
+              <element id="directory" name="lab1">
+                <element id="directory" name="screens">
+                  <element id="dir-copy" path="$PROJECT_DIR$/app/src/main/java/by/bashlikovv/lab1/screens" />
+                </element>
+              </element>
+            </element>
+          </element>
+        </element>
       </element>
     </root>
   </artifact>
