@@ -8,7 +8,7 @@ import java.io.Serializable
 open class Square(
     val x: Float = 0f,
     val y: Float = 0f,
-    val side: Float = 0f,
+    private val side: Float = 0f,
     val color: Color = Color.White,
     val rotate: Float = 0f,
     val translateR: Float = 0f,

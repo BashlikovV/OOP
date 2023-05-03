@@ -2,16 +2,21 @@ package app
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import app.screens.circle.CircleView
 import app.screens.configuration.ConfigurationView
-import by.bashlikovv.lab1.screens.drawing.DrawingView
+import app.screens.drawing.DrawingView
+import app.screens.serialization.SerializationView
+import app.updated_shapes.CircleShape
+import app.updated_shapes.Shape
 
 @Composable
 fun MainActivityContent(
@@ -21,7 +26,8 @@ fun MainActivityContent(
     val titles = listOf(
         "circle" to "CircleView",
         "drawing" to "DrawingView",
-        "configuration" to "ConfigurationView"
+        "configuration" to "ConfigurationView",
+        "serialization" to "SerializationView"
     )
 
     Scaffold(
@@ -50,6 +56,9 @@ fun MainActivityContent(
                 }
                 2 -> {
                     ConfigurationView().ConfigurationScreen(modifier = Modifier.fillMaxSize())
+                }
+                3 -> {
+                    SerializationView().SerializationScreen(modifier = Modifier.fillMaxSize())
                 }
             }
         }
