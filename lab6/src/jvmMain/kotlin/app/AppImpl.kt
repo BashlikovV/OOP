@@ -1,10 +1,17 @@
 package app
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import theme.Theme
 
-class AppImpl(override val theme: Theme) : App {
+class AppImpl(
+    override val theme: Theme,
+    private val onResetContent: () -> Unit
+) : App {
 
     private val titles = listOf("Menu", "Order", "Account", "Card")
 
@@ -30,6 +37,19 @@ class AppImpl(override val theme: Theme) : App {
                             onClick = { state = index },
                             text = { Text(text = title) }
                         )
+                    }
+                }
+            },
+            drawerContent = {
+                Column(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .fillMaxWidth(0.3f)
+                ) {
+                    Button(
+                        onClick = { onResetContent() }
+                    ) {
+                        Text("Reset content")
                     }
                 }
             },
